@@ -1,282 +1,113 @@
-{%load static%}
+{% extends "base.htm"%}
+{% load static %}
 
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Diptam Adaptive Quiz Application</title>
+{% block title %} Diptam's Adaptive Quizes {% endblock %}
 
+{% block css %}
+<style>
+    input {
+        height: 50px;
+        width: 350px;
+        border-radius: 15px;
+        padding-left: 10px;
+    }
+</style>
+{% endblock %}
 
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
-	<link rel="shortcut icon" type="image/png" href="{% static 'favicon.png'%}">
-
-	<link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
-
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
- 
-    <link rel="stylesheet" type="text/css" href="{% static 'main.css'%}">
-
-	<link id="theme-style" rel="stylesheet" type="text/css" href="">
-
-<!--height: auto;
-            position: relative;
-            top: 50%;
-            transform: translateY(-50%);
-            border: 0.3px solid rgb(82, 82, 82);-->
-    <style type="text/css">
-        
-        .form-section{
-            margin: 20px 0;
-            text-align: center;
-            height: 100%;
-        }
-        .box{
-            position: static;
-            top: 0%;
-            transform: none;
-            margin: auto;
-            width: 800px;
-            height: 100%;
-            box-shadow: 3px 3px 5px 6px var(--borderColor);
-            background-color: var(--mainColor);
-            overflow: hidden;
-        }
-
-		.img-container{
-			max-width: 600px;
-		}
-
-		img{
-			width: 100%;
-        }
-
-		.iframe-container{
-			position: relative;
-			width: 100%;
-			padding-bottom: 56.25%; 
-			height: 0;
-		  }
-		  .iframe-container iframe{
-			position: absolute;
-			top:0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-          }
-          
-          .whatsappForm,
-          .after_form1{
-              position: relative;
-              height: 100px;
-          }
-
-	</style>
-
-</head>
+{% block content %}
 
 
-
-<body>
-	<div class="nav-wrapper" id="top">
-
-		<!-- Link around dots-wrapper added after tutorial video -->
-		<a href="https://diptampaul.com/" id="close-post">
-			<div class="dots-wrapper">
-				<div id="dot-1" class="browser-dot"></div>
-				<div id="dot-2" class="browser-dot"></div>
-				<div id="dot-3" class="browser-dot"></div>
-			</div>
-		</a>
-
-		<div id="theme-options">
-			<div data-mode="dtheme" class="dtheme dark-mode" style="cursor: pointer;"><strong>Dark Theme</strong></div>
-			<div data-mode="ltheme" class="ltheme light-mode" style="cursor: pointer;"><strong>Light Theme</strong></div>
-		</div>
-        
-
-		<ul id="navigation">
-			<li><a href="https://diptampaul.com/#Contact">Contact</a></li>
-
-		</ul>
-    </div>
-    
-
-	<section class="s1" >
-	<div class="main-container">
-        {%if error%}
-        <p style="text-align: center; font-size:0.87em"><strong>Invalid URL</strong></p>
-        {%else%}
-        <p style="text-align: center; font-size:0.87em"><strong>This is not a Responsive Design. Open it any Desktop Browser</strong></p>
-        {%endif%}
-    </div>
-</section>
-
+{% if user.is_authenticated %}
 <section class="s1"  style="min-height: 80vh;">
     <div class="form-section">
         <div class="box box-1">
             <div class="heading">
                 <h2>Adaptive Quiz System</h2>
-                
+                <h4>Hello, {{user.first_name}}</h4>
+                <a href="{% url 'logout' %}" style="text-decoration: none; color:inherit; "><button>
+                    Sign Out
+                </button></a> 
+                <p></p>
+            </div>
+            
+            
+        </div>
+
+
+    </div>
+
+</section> 
+{% else %}
+<section class="s1"  style="min-height: 80vh;">
+    <div class="form-section">
+        <div class="box box-1">
+            <div class="heading">
+                <h2>Adaptive Quiz System</h2>                
                 <p></p>
             </div>
             <a href="{% url 'home' %}" style="text-decoration: none; color:inherit"><button class="talk">
                 Sign Up
             </button></a>
-            <button class="group">
+            <a href="{% url 'login' %}" style="text-decoration: none; color:inherit"><button class="talk">
                 Sign In
-            </button>
-            <!--User Submission Form
-            <form class="whatsappForm before_form" action="short" method="POST">
-                {% csrf_token %} 
-                <div class="field-start" style="cursor: pointer;">
-                    <i class="fa fa-link"></i>
-                    <input type="button" value="Your URL Goes Here" id="startChat" style="cursor:pointer;">
-                    <i class="fa fa-link" style="transform: rotateY(-180deg);"></i>
-                </div>
-                <div class="field-name inactive">
-                    <i class="fa fa-times"></i>
-                    <div class="input-area">
-                        <i class="fa fa-clipboard"></i>
-                        <input type="url" placeholder="Paste URL" id="wurl" name="wurl" required>
-                    </div>
-                    <i class="fa fa-arrow-down"></i>
-                </div>
-
-                <div class="field-name inactive">
-                    <i class="fa fa-times"></i>
-                    <div class="input-area">
-                        <i class="fa fa-clipboard"></i>
-                        <input type="text" value="keyword" id="wshort" name="wshort">
-                    </div>
-                    <i class="fa fa-arrow-down"></i>
-                </div>
-                <div class="field-description inactive">
-                    <i class="fa fa-arrow-up"></i>
-                    <input type="submit" name="submit" value="Short URL" class="submit_form" style="border: none; background: transparent; cursor:pointer; width:100%">
-                    <i class="fa fa-arrow-up"></i>
-                </div>
-            </form>
-            
-            -->
-            <br><br><br><br><br>
-        </div>
-
-        <div class="box box-2">
-            <div class="heading">
-                <h2>Adaptive Quiz System</h2>
-                <p></p>
-            </div>
-            <a href="{% url 'home' %}" style="text-decoration: none; color:inherit"><button class="talk">
-                Sign up
             </button></a>
-            <button class="group-close" style="margin-bottom: 100px;">
-                Sign In
-            </button>
 
-            <!--
-            {%for url in all_url%}
-            <div style="text-align: left; padding-left:50px" class="details">
-                <a href="{{url.original_url}}" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color:inherit; display:inline-block"><div>Original Url: {{url.original_url}} </div></a><br>
-                <br>
-                <a href="http://localhost:8000/{{url.short_query}}" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color:inherit"><div>Shorted URL: http://localhost:8000/{{url.short_query}}</div></a><br>
-                <div>visits: {{url.visits}}</div><br><hr><br>
+
+            {% if user_auth == 'login' %}
+            <form action="login" method="POST">
+                {% csrf_token %}
+                <input type="text" name="username" placeholder="User Name"><br><br>
+                <input type="password" name="password" placeholder="Password"><br><br>
+                <input type="submit" name="submit" value="SIGN IN"><br>
+            </form>
+        
+            <div class="error">
+                <h3>
+                    <!--Print the last message coming from messages error list-->
+        
+                    {% for message in messages %}
+                    {{message}}
+                    {%endfor%}
+                </h3>
             </div>
-            {%endfor%}-->
+
+            {% else %}
+            <form action="register" method="POST">
+                {% csrf_token %}
+                <input type="text" name="first_name" placeholder="First Name"><br><br>
+                <input type="text" name="last_name" placeholder="last Name"><br><br>
+                <input type="text" name="username" placeholder="User Name"><br><br>
+                <input type="email" name="email" placeholder="Email id"><br><br>
+                <input type="password" name="password" placeholder="Password"><br><br>
+                <input type="password" name="password2" placeholder="Confirm password"><br><br>
+                <input type="submit" name="submit" value="SIGN UP">
+            </form>
+            <div class="error">
+                <h3>
+                    <!--Print the last message coming from messages error list-->
+        
+                    {% for message in messages %}
+                    {{message}}
+                    {%endfor%}
+                </h3>
+            </div>
+            {% endif %}
+
         </div>
+
+
     </div>
 
 </section> 
 
-    
-
-    
-<footer class="copyright">
-    <p>&copy; Diptam Paul</p>
-</footer>
-
-<script type="text/javascript" src="{% static 'app.js'%}"></script>
-
-    <!--Disable the Right Click on The Page so that no one can download any image-->
-    <script type="text/javascript">
-        function click (e) {
-          if (!e)
-            e = window.event;
-          if ((e.type && e.type == "contextmenu") || (e.button && e.button == 2) || (e.which && e.which == 3)) {
-            if (window.opera)
-              window.alert("");
-            return false;
-          }
-        }
-        if (document.layers)
-          document.captureEvents(Event.MOUSEDOWN);
-        
-        document.oncontextmenu = click;
-        </script>
-
-        <!--IP API-->
-        <!--
-        <script>
-            let url = 'http://ip-api.com/json';
-
-            fetch(url)
-            .then(res => res.json())
-            .then((out) => {
-              console.log('Checkout this YOUR IP JSON! ', out);
-              document.querySelector('.ip_address').innerHTML = out['query']
-
-              btn.addEventListener('mouseenter', function(e){
-                e.target.textContent = out['query']
-                e.target.style.width = '200px'
-                e.target.style.boxShadow = '5px 5px 5px 6px var(--borderColor)'
-            })
-            btn.addEventListener('mouseleave', function(e){
-                e.target.textContent = 'IP'
-                e.target.style.width = '150px'
-                e.target.style.boxShadow = '3px 3px 5px 6px var(--borderColor)'
-            })
-            })
-            .catch(err => { throw err });
-
-            //$.getJSON('http://ip-api.com/json', function(data) {
-            //    console.log(data['query']);
-            //  });
-
-            //btn hover effect
-
-        </script>-->
-
-    <script>
-        
-let themeDots = document.querySelector('.dtheme');
-
-themeDots.addEventListener('click', function(){
-    let mode = this.dataset.mode
-    console.log('Option clicked:', mode)
-    setTheme(mode)
-})
-
-function setTheme(mode){
-	if(mode == 'dtheme'){
-        document.getElementById('theme-style').href = "{% static 'post-darkmode.css'%}"
-    }
-}
+{% endif %}
 
 
 
-let themeDotsL = document.querySelector('.ltheme');
+{%endblock %} 
 
-themeDotsL.addEventListener('click', function(){
-    let modeL = this.dataset.mode
-    console.log('Light Option clicked:', modeL)
-    setThemeL(modeL)
-})
 
-function setThemeL(modeL){
-	if(modeL == 'ltheme'){
-        document.getElementById('theme-style').href = "{% static 'main.css'%}"
-    }
-}
-    </script>
-
+{% block scripts %}
     <script>
         
 formScript()
@@ -498,6 +329,5 @@ function error(color){
 function clearError(){
         document.querySelector('.contacterror').remove()
 }
-    </script>
-</body>
-</html>
+</script>
+{% endblock %}

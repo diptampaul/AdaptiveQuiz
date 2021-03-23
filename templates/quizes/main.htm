@@ -1,0 +1,55 @@
+{% extends "base.htm"%}
+{% load static %}
+
+{% block title %} 
+Diptam's Adaptive Quizes
+{% endblock %}
+
+{% block css %}
+<style>
+    .big-quiz-section{
+        width: 100%;
+    }
+    .all-quizes{
+        width: 80%;
+        height: 200px;
+        margin: 20px auto;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 10px 25px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="s1">
+<h3>Quiz List</h3>
+<hr>
+<div class="big-quiz-section">
+    {% for obj in object_list %}
+
+    <div class="all-quizes">
+        <div style="float: left;">
+            <h5>{{ forloop.counter }}.) {{obj.topic|safe}}</h5>
+            <p>Passing Score: {{obj.required_score}}%</p>
+            <br>
+            <a href="{% url 'logout' %}" style="text-decoration: none; color:inherit; "><button style="width: 150px; background: transparent;">
+                Start Quiz
+            </button>
+        </div>
+        <div style="float: right;">
+            <h6>Number of Questions: {{ obj.number_of_questions }} , Total Time: {{ obj.time }} minutes</h6>
+        </div>
+        <div style="float: clear;"></div>
+        
+    </div>
+
+{% endfor %}
+</div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}

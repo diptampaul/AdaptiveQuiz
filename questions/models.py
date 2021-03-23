@@ -5,6 +5,8 @@ from quiz.models import Quiz
 class Question(models.Model):
     text = models.CharField(max_length=200)
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    difficulty = models.CharField(max_length=6, choices=(
+        ('easy', 'easy'), ('medium', 'medium'), ('hard', 'hard')))
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
