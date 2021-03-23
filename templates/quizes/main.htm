@@ -22,8 +22,9 @@ Diptam's Adaptive Quizes
 {% endblock %}
 
 {% block content %}
+{% if user.is_authenticated %}
 <section class="s1">
-<h3>Quiz List</h3>
+<h3 style="margin-left: 20px">Quiz Lists</h3>
 <hr>
 <div class="big-quiz-section">
     {% for obj in object_list %}
@@ -33,7 +34,7 @@ Diptam's Adaptive Quizes
             <h5>{{ forloop.counter }}.) {{obj.topic|safe}}</h5>
             <p>Passing Score: {{obj.required_score}}%</p>
             <br>
-            <a href="{% url 'logout' %}" style="text-decoration: none; color:inherit; "><button style="width: 150px; background: transparent;">
+            <a href="quiz/{{obj.pk}}" style="text-decoration: none; color:inherit; "><button style="width: 150px; background: transparent;">
                 Start Quiz
             </button>
         </div>
@@ -47,6 +48,14 @@ Diptam's Adaptive Quizes
 {% endfor %}
 </div>
 </section>
+{% else %}
+<section class="s1" style="padding: 20px 20px;">
+    <h3>Log In to View the Quizes</h3>
+    <a href="{% url 'login' %}" style="text-decoration: none; color:inherit; "><button>
+        Log In Now
+    </button></a> 
+</section>
+{% endif %}
 
 {% endblock %}
 

@@ -1,0 +1,9 @@
+Name of the user diptam
+
+Score stats [-7, 30, 40]
+Total marks stats [40, 30, 40]
+
+Your obtained marks are 63
+Total marks are 110
+
+Coongrats! You have achieved 57.27272727272727% marks

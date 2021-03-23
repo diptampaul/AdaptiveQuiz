@@ -10,9 +10,384 @@ Unknown Quiz
 {% endblock %}
 
 {% block css %}
-
+<style>
+    .big-quiz-section{
+        width: 100%;
+    }
+    .all-quizes{
+        width: 80%;
+        margin: 20px auto;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 10px 25px;
+    }
+    .quiz-form{
+        display: block;
+    }
+    .answer-page-questions{
+        margin: 20px 0;
+    }
+    .right-answer{
+        padding: 15px 5px;
+        background-color: darkolivegreen;
+        color: white;
+    }
+    .wrong-answer{
+        padding: 15px 5px;
+        background-color: darkred;
+        color: white;
+    }
+    #submit{
+        display: none
+    }
+    .next:hover {
+        font-size: 1.5rem;
+        font-weight: bolder;
+    }
+    .no-display{
+        display: none;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
+{% if user.is_authenticated %}
 
+<div class="big-quiz-section">
+    <div class="timer" style="text-align: right; margin: 5px 0; margin-right: 25px;">
+        Time Left :<span class="time-in-seconds">300</span> seconds
+    </div>
+
+    <div class="all-quizes">
+        <h4 style="margin-bottom:0;">{{obj.topic}}</h4><br>
+        <p>Passing Percentage: {{obj.required_score}}%</p>
+        <br>
+        <br>
+        <p style="width: 100%;border-bottom: 3px dotted black;  "></p>
+        <form action="" id="quiz-form" class="quiz-form">
+            {% csrf_token %}
+            <div>
+                <div id="quiz-box" style="margin: 5px;">
+
+                </div>
+            </div>
+            <br><br><br>
+            <button type="submit" style="background: lightcoral; color: white; margin-left: 15px;" id="submit">
+               Save
+            </button>
+        </form>
+        <div id="score-box"></div>
+        <div id="result-box"></div>
+    
+    </div></div>
+
+{% else %}
+<section class="s1" style="padding-left: 20px;">
+    <h3>Log In to View the Quizes</h3>
+    <a href="{% url 'login' %}" style="text-decoration: none; color:inherit; "><button>
+        Log In Now
+    </button></a> 
+</section>
+{% endif %}
+
+
+{% endblock %}
+{% block scripts %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script>
+    const url = window.location.href
+    const quizBox = document.getElementById('quiz-box')
+    const scoreBox = document.getElementById('score-box')
+    const resultBox = document.getElementById('result-box')
+    const quizForm = document.getElementById('quiz-form')
+    const csrf = document.getElementsByName('csrfmiddlewaretoken')
+    var timeLeft = document.querySelector('.time-in-seconds')
+    var timeLeftinSeconds = parseInt({{obj.time}})*60
+
+
+    var start = Date.now()
+    var x = setInterval(function(){
+        if(timeLeftinSeconds<=0){
+            clearInterval(x)
+            document.getElementById('submit').click()
+        }
+        else{
+            timeLeft.innerHTML = timeLeftinSeconds
+        }
+        timeLeftinSeconds -= 1
+    }, 1000)
+    
+
+    
+
+    console.log(url)
+    $.ajax({
+        type: 'GET',
+        url: `${url}data`,
+        success: function (response) {
+            data = response.data
+            number_of_questions = response.number_of_questions
+            difficulty = response.difficulty
+            correct_answer = response.correct_answer
+            questions = []
+            data.forEach(element =>{
+                questions.push(Object.keys(element))
+            })
+            answers = []
+            data.forEach(element =>{
+                answers.push(Object.values(element))
+            })
+            //console.log(answers)
+            //console.log(correct_answer)
+
+            let set = {}
+            for(var i = 0; i < data.length; i++){
+                set[i] = [questions[i],answers[i],difficulty[i],correct_answer[i]]
+            }
+            //0 : QUESTIONS, 1: ANSWERS, 2: DIFFICULTY LEVEL, 3: CORRECT ANSWER
+            //console.log(set)
+            //console.log(Object.keys(set).length)
+            
+            let unique = []
+            let question_showed = 0
+            let prev='1'
+            
+            while(question_showed < number_of_questions){
+                
+                var r = Math.floor(Math.random() * Object.keys(set).length)
+                console.log(r)
+                if((set[r][2]=='medium') && (prev==1) && !(unique.includes(r))){
+                    unique.push(r)
+                    //console.log(set[r])
+
+                    quizBox.innerHTML += `
+                        <hr>
+                        <div style="margin: 5px 5px" class="questions ${set[r][0]}">
+                            <strong>${set[r][0]}</strong>
+                        </div>
+                    `
+
+                    set[r][1].forEach(answer => {
+                        answer.forEach(a => {
+                            //console.log(a)
+                            quizBox.innerHTML += `
+                            <div>
+                                <input type="radio" class="ans ${set[r][0]}" id="${set[r][0]}-${a}" name="${set[r][0]}" value="${a}">
+                                <label for="${set[r][0]}">${a}</label>
+                            </div>
+                        `
+                        })
+                        
+                    })
+
+                    if(question_showed != number_of_questions-1){
+                        quizBox.innerHTML += `
+                    <div style="margin: 15px 10px;padding: 15px 10px; font-size: 1.2em; border: 1px solid #ccc; border-radius: 10px; cursor:pointer; font-weight: bolder" class="next">
+                        <b>Next<b>
+                        </div>
+                    `
+                    }else{
+                        document.getElementById('submit').style.display = 'block';
+                    }
+                    prev = 2
+                    question_showed += 1
+
+
+
+                }else if((set[r][2]!='medium') && !(unique.includes(r))){
+                    unique.push(r)
+                    //console.log(set[r])
+
+                    quizBox.innerHTML += `
+                        <hr>
+                        <div style="margin: 5px 5px" class="questions ${set[r][0]}">
+                            <strong>${set[r][0]}</strong>
+                        </div>
+                    `
+
+                    set[r][1].forEach(answer => {
+                        answer.forEach(a => {
+                            //console.log(a)
+                            quizBox.innerHTML += `
+                            <div>
+                                <input type="radio" class="ans ${set[r][0]}" id="${set[r][0]}-${a}" name="${set[r][0]}" value="${a}">
+                                <label for="${set[r][0]}">${a}</label></input>
+                            </div>
+                        `
+                        })
+                        
+                        
+                    })
+
+                    if(question_showed != number_of_questions-1){
+                        quizBox.innerHTML += `
+                    <div style="margin: 15px 10px;padding: 15px 10px; font-size: 1.2em; border: 1px solid #ccc; border-radius: 10px; cursor:pointer; font-weight: bolder" class="next">
+                        <b>Next<b>
+                        </div>
+                    `
+                    }else{
+                        document.getElementById('submit').style.display = 'block';
+                    }
+
+                    question_showed += 1
+                }
+                    
+            }
+
+            console.log(quizBox.children)
+            for(let i = 0; i < quizBox.children.length; i++){
+                quizBox.children[i].classList.add('no-display')
+            }
+
+            quizBox.children[1].classList.remove('no-display')
+            quizBox.children[2].classList.remove('no-display')
+            quizBox.children[3].classList.remove('no-display')
+            quizBox.children[4].classList.remove('no-display')
+            quizBox.children[5].classList.remove('no-display')
+            quizBox.children[6].classList.remove('no-display')
+
+
+            document.querySelectorAll('.next').forEach(function(n,index){
+                n.addEventListener('click', () =>{
+                    console.log(index)
+                    if(index < number_of_questions-1){
+                        quizBox.children[index*8+1].classList.add('no-display')
+                        quizBox.children[index*8+2].classList.add('no-display')
+                        quizBox.children[index*8+3].classList.add('no-display')
+                        quizBox.children[index*8+4].classList.add('no-display')
+                        quizBox.children[index*8+5].classList.add('no-display')
+                        quizBox.children[index*8+6].classList.add('no-display')
+
+                        var next_index = index + 1
+
+                        quizBox.children[next_index*8+1].classList.remove('no-display')
+                        quizBox.children[next_index*8+2].classList.remove('no-display')
+                        quizBox.children[next_index*8+3].classList.remove('no-display')
+                        quizBox.children[next_index*8+4].classList.remove('no-display')
+                        quizBox.children[next_index*8+5].classList.remove('no-display')
+                        quizBox.children[next_index*8+6].classList.remove('no-display')
+                    }
+                })
+            })
+
+            //for(let i = 0; i < quizBox.children.length; i++){
+            //    if(quizBox.children[i].classList[0] == 'questions'){
+            //        console.log(quizBox.children[i].innerHTML)
+            //    }
+                
+            //}
+            
+
+
+           
+
+
+
+
+
+
+            //data.forEach(element => {
+            //    for (const [question, answers] of Object.entries(element)) {
+            //        //console.log(question, answers)
+            //        
+            //        quizBox.innerHTML += `
+            //            <hr>
+            //            <div style="margin: 5px 5px">
+            //                <strong>${question}</strong>
+            //            </div>
+            //        `
+//
+            //        answers.forEach(answer => {
+            //            quizBox.innerHTML += `
+            //                <div>
+            //                    <label for="${question}">
+            //                    <input type="radio" class="ans" id="${question}-${answer}" name="${question}" value="${answer}">
+            //                    ${answer}</label>
+            //                </div>
+            //            `
+            //        })
+            //    }
+            //})
+        },
+        error: function (error) {
+            console.log(error)
+        }
+    })
+
+    const sendData = () => {
+        const elements = [...document.getElementsByClassName('ans')]
+        const data = {}
+        data['csrfmiddlewaretoken'] = csrf[0].value
+        elements.forEach(el => {
+            if(el.checked){
+                data[el.name] = el.value
+            }else{
+                if (!data[el.name]){
+                    data[el.name] = null
+                }
+            }
+        })
+
+        $.ajax({
+            type: 'POST',
+            url: `${url}save/`,
+            data: data,
+            success: function(response) {
+                //console.log(response)
+                quizForm.style.display ='none';
+                document.querySelector('.timer').style.display = 'none'
+                const passed = response.passed
+                const results = response.results
+                const score = response.score
+
+                console.log(results)
+
+                scoreBox.innerHTML = `<div style="font-size: 1.5rem; font-weight: bolder;"><div style=${passed ? "color: darkgreen" : "color: darkred"}>${passed ? 'Congratulations... You Passed' : 'Better Luck Next Time.'} </div></div><br> <div>Your Score is: ${score}</div><br><br> <hr>`
+
+
+                results.forEach(res=>{
+                    const resDiv = document.createElement('div')
+                    for(const[question, response] of Object.entries(res)){
+                        console.log(question,response)
+
+                        resDiv.innerHTML += question
+                        resDiv.classList.add('answer-page-questions')
+
+                        if(response['answered']=='not answered'){
+                            resDiv.innerHTML += '<br><br> --   <strong style="color: #ccc">not answered<strong>'
+                            resDiv.classList.add('wrong-answer')
+                        }
+                        else{
+                            const answer = response['answered']
+                            const correct = response['correct_answer']
+                            //console.log(answer,correct)
+                            if(answer==correct){
+                                resDiv.classList.add('right-answer')
+                                resDiv.innerHTML += `<br><br> -- <strong style="color: #ccc">answered:</strong>  ${answer}`
+                            }else{
+                                resDiv.classList.add('wrong-answer')
+                                resDiv.innerHTML += `<br><br> --  <strong style="color: #ccc">correct answer:</strong>  ${correct}`
+                                resDiv.innerHTML += `<br> --  <strong style="color: #ccc">answered:</strong>  ${answer}`
+                            }
+                        }
+                    }
+
+                    scoreBox.append(resDiv)
+                })
+
+            },
+            error: function(error){
+                console.log(error)
+            }
+        })
+
+    }
+
+    quizForm.addEventListener('submit', e=> {
+        e.preventDefault()
+
+        sendData()
+    })
+
+</script>
 {% endblock %}

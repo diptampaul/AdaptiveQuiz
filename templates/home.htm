@@ -1,0 +1,77 @@
+{% extends "base.htm"%}
+{% load static %}
+
+{% block title %} 
+Diptam's Adaptive Quizes | Home
+{% endblock %}
+
+{% block css %}
+<style>
+    .container{
+        width: 80%;
+        text-align: center;
+        margin: auto;
+    }
+    .inner-div{
+        margin: auto;
+    }
+    .outer-div{
+        overflow: auto;
+    }
+</style>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+{% endblock %}
+
+{% block content %}
+
+<section class="s1">
+    <div class="container">
+        <div class="timer" style="text-align: right; margin: 5px 0; margin-right: 25px;">
+            Reading Time Left :<span class="time-in-seconds"></span> seconds
+        </div>
+
+        <div class="inner-div">
+            <h2>Adaptive Quiz System - Hackathon 2021</h2>
+            <h4>Name: Diptam Paul<br>email-id: 21f1005784@student.onlinedegree.iitm.ac.in</h4>
+        </div>
+        <div class="outer-div">
+            <p>
+                The Adaptive Quiz is a new activity module that allows instructors to administer an adaptive style quiz. As the student attempts the quiz an algorithm uses a formula to choose questions and estimate the students ability within a certain amount of error. When adding/editing the adaptive quiz, instructors can define the activity parameters that will be used by the algorithm while the student is attempting the activity. <br><br>
+
+                The adaptive quiz requires same number of HARD, MEDIUM, and EASY questions so that the students can get equal opportunity to pass the exam. <br><br>
+
+                The activity parameters allow the instructor to determine the difficulty levels of questions available for the quiz. A starting level is selected for the first question and then the algorithm selects the next difficulty level for a question to be chosen from. If the student answers a question correctly, a more challenging question is chosen next. If the student answers a question incorrectly, a less challenging question is chosen next. <br><br>
+
+                During the start of an attempt the number of questions is undetermined. The amount of questions presented will be between a minimum and maximum number of questions set in the activity parameters. After the minimum number of questions have been answered, the quiz will stop when the user's ability level is determined to the required accuracy or the quiz stops when the maximum number of questions have been answered.<br><br>
+
+                <a href="https://learningspaces.remote-learner.com/mod/book/tool/print/index.php?id=15838#:~:text=The%20Adaptive%20Quiz%20is%20a,a%20certain%20amount%20of%20error.&text=Tags%20are%20used%20to%20assign%20the%20questions%20difficulty%20levels." target="__blank">Know More About It</a>
+            </p>
+
+            <p><strong>Technologies Used:</strong> Python Django, JavaScript, HTML - Jinja Template, PostGres SQL, JSON API</p>
+            <a href="{% url 'dashboard' %}"><h4 style="cursor:pointer;"><i class="fa fa-chevron-up"></i> Skip Reading</h4></a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    var start = Date.now()
+    let timeLeft = document.querySelector('.time-in-seconds')
+    var timeLeftinSeconds = 60
+    var x = setInterval(function(){
+        if(timeLeftinSeconds<=0){
+            clearInterval(x)
+            window.location.href = "{% url 'dashboard' %}";
+        }
+        else{
+            timeLeft.innerHTML = timeLeftinSeconds
+        }
+        timeLeftinSeconds -= 1
+    }, 1000)
+
+
+    //window.location.href = "http://www.w3schools.com";
+</script>
+{% endblock %}

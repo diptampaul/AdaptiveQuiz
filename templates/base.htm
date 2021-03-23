@@ -1,7 +1,7 @@
 {%load static%}
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 	<title>{% block title %}  {% endblock %}</title>
 
@@ -82,7 +82,7 @@
 	<div class="nav-wrapper" id="top">
 
 		<!-- Link around dots-wrapper added after tutorial video -->
-		<a href="/" id="close-post">
+		<a href="{% url 'dashboard' %}" id="close-post">
 			<div class="dots-wrapper">
 				<div id="dot-1" class="browser-dot"></div>
 				<div id="dot-2" class="browser-dot"></div>
@@ -95,11 +95,17 @@
 			<div data-mode="ltheme" class="ltheme light-mode" style="cursor: pointer;"><strong>Light Theme</strong></div>
 		</div>
         
-
-		<ul id="navigation">
-			<li><a href="https://diptampaul.com/#Contact">Contact</a></li>
+        {% if user.is_authenticated %}
+        <ul id="navigation">
+			<li><a href="{% url 'logout' %}">Sign out</a></li>
 
 		</ul>
+        {% else %}
+		<ul id="navigation">
+			<li><a href="{% url 'login' %}">Sign In</a></li>
+
+		</ul>
+        {% endif %}
     </div>
     
 
@@ -121,6 +127,15 @@
 </footer>
 </body>
 <script>
+    var timeLeftinSeconds = 10
+    var x = setInterval(function(){
+        if(timeLeftinSeconds<=0){
+            clearInterval(x)
+            document.querySelector('.main-container').style.display = 'none';
+        }
+        timeLeftinSeconds -= 1
+    }, 1000)
+
     function click (e) {
         if (!e)
           e = window.event;
@@ -142,15 +157,15 @@
       const group_content = document.querySelector('.box-2')
       
       
-      group.addEventListener('click',function(e){
-          main_content.style.display = 'None';
-          group_content.style.display = 'block';
-      })
+      //group.addEventListener('click',function(e){
+      //    main_content.style.display = 'None';
+      //    group_content.style.display = 'block';
+      //})
       
-      group_cls.addEventListener('click',function(e){
-          main_content.style.display = 'block';
-          group_content.style.display = 'none';
-      })
+      //group_cls.addEventListener('click',function(e){
+      //    main_content.style.display = 'block';
+      //    group_content.style.display = 'none';
+      //})
       </script>
           <script>
               

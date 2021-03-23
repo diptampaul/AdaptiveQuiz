@@ -1,4 +1,5 @@
 from django.db import models
+import random
 
 # Create your models here.
 
@@ -14,7 +15,7 @@ class Quiz(models.Model):
 
     def get_question(self):
         # modelname_set.all()
-        return self.question_set.all()[:self.number_of_questions]
+        return self.question_set.all()
 
     class Meta:
         verbose_name_plural = 'Quizes'
