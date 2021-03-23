@@ -1,5 +1,6 @@
-Django Adaptive Quiz App
+*Django Adaptive Quiz App*
 
+**Youtube Video on how it works**
 [![Watch the video](https://i.imgur.com/FwUCnbF.png)](https://youtu.be/N0dyY5uS88c)
 
 **Instructions to run the program**
