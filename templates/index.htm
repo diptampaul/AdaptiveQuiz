@@ -1,0 +1,503 @@
+{%load static%}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Diptam Adaptive Quiz Application</title>
+
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+	<link rel="shortcut icon" type="image/png" href="{% static 'favicon.png'%}">
+
+	<link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+ 
+    <link rel="stylesheet" type="text/css" href="{% static 'main.css'%}">
+
+	<link id="theme-style" rel="stylesheet" type="text/css" href="">
+
+<!--height: auto;
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 0.3px solid rgb(82, 82, 82);-->
+    <style type="text/css">
+        
+        .form-section{
+            margin: 20px 0;
+            text-align: center;
+            height: 100%;
+        }
+        .box{
+            position: static;
+            top: 0%;
+            transform: none;
+            margin: auto;
+            width: 800px;
+            height: 100%;
+            box-shadow: 3px 3px 5px 6px var(--borderColor);
+            background-color: var(--mainColor);
+            overflow: hidden;
+        }
+
+		.img-container{
+			max-width: 600px;
+		}
+
+		img{
+			width: 100%;
+        }
+
+		.iframe-container{
+			position: relative;
+			width: 100%;
+			padding-bottom: 56.25%; 
+			height: 0;
+		  }
+		  .iframe-container iframe{
+			position: absolute;
+			top:0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+          }
+          
+          .whatsappForm,
+          .after_form1{
+              position: relative;
+              height: 100px;
+          }
+
+	</style>
+
+</head>
+
+
+
+<body>
+	<div class="nav-wrapper" id="top">
+
+		<!-- Link around dots-wrapper added after tutorial video -->
+		<a href="https://diptampaul.com/" id="close-post">
+			<div class="dots-wrapper">
+				<div id="dot-1" class="browser-dot"></div>
+				<div id="dot-2" class="browser-dot"></div>
+				<div id="dot-3" class="browser-dot"></div>
+			</div>
+		</a>
+
+		<div id="theme-options">
+			<div data-mode="dtheme" class="dtheme dark-mode" style="cursor: pointer;"><strong>Dark Theme</strong></div>
+			<div data-mode="ltheme" class="ltheme light-mode" style="cursor: pointer;"><strong>Light Theme</strong></div>
+		</div>
+        
+
+		<ul id="navigation">
+			<li><a href="https://diptampaul.com/#Contact">Contact</a></li>
+
+		</ul>
+    </div>
+    
+
+	<section class="s1" >
+	<div class="main-container">
+        {%if error%}
+        <p style="text-align: center; font-size:0.87em"><strong>Invalid URL</strong></p>
+        {%else%}
+        <p style="text-align: center; font-size:0.87em"><strong>This is not a Responsive Design. Open it any Desktop Browser</strong></p>
+        {%endif%}
+    </div>
+</section>
+
+<section class="s1"  style="min-height: 80vh;">
+    <div class="form-section">
+        <div class="box box-1">
+            <div class="heading">
+                <h2>Adaptive Quiz System</h2>
+                
+                <p></p>
+            </div>
+            <a href="{% url 'home' %}" style="text-decoration: none; color:inherit"><button class="talk">
+                Sign Up
+            </button></a>
+            <button class="group">
+                Sign In
+            </button>
+            <!--User Submission Form
+            <form class="whatsappForm before_form" action="short" method="POST">
+                {% csrf_token %} 
+                <div class="field-start" style="cursor: pointer;">
+                    <i class="fa fa-link"></i>
+                    <input type="button" value="Your URL Goes Here" id="startChat" style="cursor:pointer;">
+                    <i class="fa fa-link" style="transform: rotateY(-180deg);"></i>
+                </div>
+                <div class="field-name inactive">
+                    <i class="fa fa-times"></i>
+                    <div class="input-area">
+                        <i class="fa fa-clipboard"></i>
+                        <input type="url" placeholder="Paste URL" id="wurl" name="wurl" required>
+                    </div>
+                    <i class="fa fa-arrow-down"></i>
+                </div>
+
+                <div class="field-name inactive">
+                    <i class="fa fa-times"></i>
+                    <div class="input-area">
+                        <i class="fa fa-clipboard"></i>
+                        <input type="text" value="keyword" id="wshort" name="wshort">
+                    </div>
+                    <i class="fa fa-arrow-down"></i>
+                </div>
+                <div class="field-description inactive">
+                    <i class="fa fa-arrow-up"></i>
+                    <input type="submit" name="submit" value="Short URL" class="submit_form" style="border: none; background: transparent; cursor:pointer; width:100%">
+                    <i class="fa fa-arrow-up"></i>
+                </div>
+            </form>
+            
+            -->
+            <br><br><br><br><br>
+        </div>
+
+        <div class="box box-2">
+            <div class="heading">
+                <h2>Adaptive Quiz System</h2>
+                <p></p>
+            </div>
+            <a href="{% url 'home' %}" style="text-decoration: none; color:inherit"><button class="talk">
+                Sign up
+            </button></a>
+            <button class="group-close" style="margin-bottom: 100px;">
+                Sign In
+            </button>
+
+            <!--
+            {%for url in all_url%}
+            <div style="text-align: left; padding-left:50px" class="details">
+                <a href="{{url.original_url}}" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color:inherit; display:inline-block"><div>Original Url: {{url.original_url}} </div></a><br>
+                <br>
+                <a href="http://localhost:8000/{{url.short_query}}" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color:inherit"><div>Shorted URL: http://localhost:8000/{{url.short_query}}</div></a><br>
+                <div>visits: {{url.visits}}</div><br><hr><br>
+            </div>
+            {%endfor%}-->
+        </div>
+    </div>
+
+</section> 
+
+    
+
+    
+<footer class="copyright">
+    <p>&copy; Diptam Paul</p>
+</footer>
+
+<script type="text/javascript" src="{% static 'app.js'%}"></script>
+
+    <!--Disable the Right Click on The Page so that no one can download any image-->
+    <script type="text/javascript">
+        function click (e) {
+          if (!e)
+            e = window.event;
+          if ((e.type && e.type == "contextmenu") || (e.button && e.button == 2) || (e.which && e.which == 3)) {
+            if (window.opera)
+              window.alert("");
+            return false;
+          }
+        }
+        if (document.layers)
+          document.captureEvents(Event.MOUSEDOWN);
+        
+        document.oncontextmenu = click;
+        </script>
+
+        <!--IP API-->
+        <!--
+        <script>
+            let url = 'http://ip-api.com/json';
+
+            fetch(url)
+            .then(res => res.json())
+            .then((out) => {
+              console.log('Checkout this YOUR IP JSON! ', out);
+              document.querySelector('.ip_address').innerHTML = out['query']
+
+              btn.addEventListener('mouseenter', function(e){
+                e.target.textContent = out['query']
+                e.target.style.width = '200px'
+                e.target.style.boxShadow = '5px 5px 5px 6px var(--borderColor)'
+            })
+            btn.addEventListener('mouseleave', function(e){
+                e.target.textContent = 'IP'
+                e.target.style.width = '150px'
+                e.target.style.boxShadow = '3px 3px 5px 6px var(--borderColor)'
+            })
+            })
+            .catch(err => { throw err });
+
+            //$.getJSON('http://ip-api.com/json', function(data) {
+            //    console.log(data['query']);
+            //  });
+
+            //btn hover effect
+
+        </script>-->
+
+    <script>
+        
+let themeDots = document.querySelector('.dtheme');
+
+themeDots.addEventListener('click', function(){
+    let mode = this.dataset.mode
+    console.log('Option clicked:', mode)
+    setTheme(mode)
+})
+
+function setTheme(mode){
+	if(mode == 'dtheme'){
+        document.getElementById('theme-style').href = "{% static 'post-darkmode.css'%}"
+    }
+}
+
+
+
+let themeDotsL = document.querySelector('.ltheme');
+
+themeDotsL.addEventListener('click', function(){
+    let modeL = this.dataset.mode
+    console.log('Light Option clicked:', modeL)
+    setThemeL(modeL)
+})
+
+function setThemeL(modeL){
+	if(modeL == 'ltheme'){
+        document.getElementById('theme-style').href = "{% static 'main.css'%}"
+    }
+}
+    </script>
+
+    <script>
+        
+formScript()
+
+function formScript(){
+        let name, email, url;
+
+        //chat start
+        const startbtn = document.querySelector('.field-start')
+        startbtn.addEventListener('click', function(e){
+                const nextDiv = startbtn.nextElementSibling;
+                //move to next Slide
+                nextSlide(startbtn, nextDiv) 
+        })
+
+        //chat close
+        const closeChat = document.querySelector('.fa-times')
+        closeChat.addEventListener('click', function(e){
+                const parent = closeChat.parentElement;
+                const prevDiv = parent.previousElementSibling;
+                prevSlide(parent, prevDiv)
+
+                //change the background to default one depending on the theme
+                document.querySelector('.box').style.backgroundColor = 'var(--mainColor)'
+
+                //clear all the input tags
+                try{
+                    document.getElementById('wurl').value = ''
+                }
+                catch{
+                    console.log("Not Found")
+                }
+
+                try{
+                    document.getElementById('wemail').value = ''
+                }
+                catch{
+                    console.log("Not Found")
+                }
+
+                try{
+                    document.getElementById('wdes').value = ''
+                }
+                catch{
+                    console.log("Not Found")
+                }
+        })
+
+        //arrow down effects
+        const arrowDown = document.querySelectorAll('.fa-arrow-down')
+        arrowDown.forEach(function(arrow){
+                arrow.addEventListener('click', function(e){
+                        //input tag
+                        const input = arrow.previousElementSibling.childNodes[3];
+
+                        //parent div
+                        const parent = arrow.parentElement;
+
+                        //fetch the next div
+                        const nextForm = parent.nextElementSibling;
+                        
+                        //check for validation
+                        if(input.type === 'text' && validateUser(input)){
+                                //store the name
+                                name = input.value
+                                //move to next Slide
+                                nextSlide(parent, nextForm)
+                        }else if(input.type === 'email' && validateEmail(input)){
+                                //store the email
+                                email = input.value
+                                //move to next Slide
+                                nextSlide(parent, nextForm)                             
+                        }else if(input.type === 'url' && validateURL(input)){
+                            //store the email
+                            url = input.value
+                            document.getElementById('wurl').value = input.value
+
+                            //move to next Slide
+                            nextSlide(parent, nextForm)                             
+                    }   else{
+                                parent.style.animation = 'shake 0.5s ease'
+                        }
+
+                        //Delete Parent Animation after done as it will not do multiple times by default
+                        parent.addEventListener('animationend', ()=>{
+                                parent.style.animation = '';
+                        })
+                })
+        })
+
+        //arrow up effects
+        const arrowUp = document.querySelectorAll('.fa-arrow-up')
+        arrowUp.forEach(function(arrow){
+                arrow.addEventListener('click', function(e){
+                        //parent div
+                        const parent = arrow.parentElement;
+
+                        //fetch the previous div
+                        const prevForm = parent.previousElementSibling;
+                        
+                        //move to Prev Slide
+                        prevSlide(parent, prevForm)
+
+                        //change the background to default one depending on the theme
+                        document.querySelector('.box').style.backgroundColor = 'var(--mainColor)'
+                        })
+        })
+
+        //submit arrow effects
+        // const submitBtn = document.querySelector('.sumit_form')
+        // submitBtn.addEventListener('click', function(e){
+        //         //parent link a tag
+        //         const link = submitBtn.parentElement;
+
+        //         //previous div
+        //         const pdiv = link.previousElementSibling;
+
+        //         //description input tag
+        //         const input = pdiv.childNodes[3]
+
+        //         //parentdiv
+        //         const parent = link.parentElement;
+
+        //         //nextForm
+        //         const nextForm = link.parentElement.nextElementSibling;
+
+        //         let text;
+        //         if(input.type === 'text' && validateUser(input)){
+        //                 //input tag value with custom text
+        //                 text = `Hi Diptam, I'm ${name} (contact: ${email}). My message is: ${input.value}`;
+        //                 //replace the spaces with %20 so that we can use it in whatsapp message
+        //                 const message = text.replace(/\s/g, "%20")
+        //                 console.log(message)
+        //                 //set the href of a tag
+        //                 link.setAttribute('href', `https://wa.me/+916378874873?text=${message}`)
+
+        //                 //move to next elem
+        //                 nextSlide(parent, nextForm)
+        //         }else{
+        //                 parent.style.animation = 'shake 0.5s ease'
+        //         }
+
+        //         //Delete Parent Animation after done as it will not do multiple times by default
+        //         parent.addEventListener('animationend', ()=>{
+        //                 parent.style.animation = '';
+        //         })
+        // })
+        // submitBtn.addEventListener('click', function(e){
+        //     document.querySelector('.before_form').style.display = 'none'
+        //     document.querySelector('.after_form').style.display = 'block'
+        // })
+}
+
+//input validation for user
+function validateUser(user){
+        if(user.value.length < 3){
+                // console.log('not enough characters')
+                error('rgb(189,87,87)')
+
+        }else{
+                //change the background to default one depending on the theme
+                document.querySelector('.box').style.backgroundColor = 'var(--mainColor)'
+                return true;
+        }
+}
+function validateURL(url){
+    var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+    '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+    '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+    '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+    if(pattern.test(url.value)){
+        //change the background to default one depending on the theme
+        document.querySelector('.box').style.backgroundColor = 'var(--mainColor)'
+        return true;
+            
+
+    }else{
+        // console.log('not enough characters')
+        error('rgb(189,87,87)')
+    }
+}
+
+//input validation for email
+function validateEmail(email){
+        const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        if(re.test(email.value)){
+                //validation successful
+                //change the background to default one depending on the theme
+                document.querySelector('.box').style.backgroundColor = 'var(--mainColor)'
+                return true;  
+        }else{
+                error('rgb(189,87,87)')
+
+        }
+    }
+
+//Move to Next Slide
+function nextSlide(parent, nextform){
+        parent.classList.add('inactive')
+        parent.classList.remove('present')
+        nextform.classList.add('present')
+}
+
+//Move to Previous Slide
+function prevSlide(parent, prevForm){
+        parent.classList.add('inactive')
+        parent.classList.remove('present')
+        prevForm.classList.add('present')
+}
+
+//error background color change 
+function error(color){
+        document.querySelector('.box').style.backgroundColor = color
+}
+
+//clear error page after 3 sec
+function clearError(){
+        document.querySelector('.contacterror').remove()
+}
+    </script>
+</body>
+</html>

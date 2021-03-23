@@ -1,0 +1,44 @@
+:root{
+	--mainColor:#15202B;
+	--secondaryColor:#192734;
+
+	--borderColor:#164D56;
+
+	--mainText:#fff;
+	--secondaryText:#eeeeee;
+
+	--themeDotBorder:#FFF;
+
+	--previewBg:rgb(25, 39, 52, 0.8);
+	--previewShadow:#111921;
+
+
+	--buttonColor:#17a2b8;
+
+    --curouseldots:rgba(255,255,255,0.5);
+    --curouseldarkdots:rgba(255,255,255,1);
+
+	--githubLink: #cfe6ec;
+	
+	--upArrowShadow0: #dfcddc00;
+	--upArrowShadowFull: #eceff1bb;
+}
+
+.dark-mode{
+	display: none;
+	color: var(--mainText);
+	position: relative;
+	top: 1;
+	left: 0;
+	transform: translateX(50%);
+
+}
+
+.light-mode{
+	display: block;
+	color: var(--mainText);
+	position: relative;
+	top: 5;
+	left: 0;
+	transform: translateX(-50%);
+}

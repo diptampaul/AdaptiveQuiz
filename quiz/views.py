@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from .models import Services
+from .models import Quiz
 
 # Create your views here.
 
 def home(request):
-    pass
+    return render(request, 'index.htm', {})
